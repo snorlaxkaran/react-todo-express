@@ -1,9 +1,17 @@
-export function Todos() {
+export function Todos({ todos }) {
+  if (!Array.isArray(todos)) {
+    return <p>Loading todos...</p>;
+  }
+
   return (
     <div>
-      <h2>Go to GYM</h2>
-      <h2>Eat protein</h2>
-      <h2>Eat chicken</h2>
+      {todos.map((todo, index) => (
+        <div key={index}>
+          <h1>{todo.title}</h1>
+          <h2>{todo.description}</h2>
+          <button>{todo.completed ? "Completed" : "Mark as complete"}</button>
+        </div>
+      ))}
     </div>
   );
 }
