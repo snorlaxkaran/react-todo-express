@@ -1,9 +1,9 @@
 const express = require("express");
 const { createTodo, updateTodo } = require("./types");
-const { Todo } = require("./db");
+const { Todo, todo } = require("./db");
 const app = express();
 const port = 3000;
-app.use(express.json);
+app.use(express.json());
 
 app.post("/todo", async (req, res) => {
   const createPayload = req.body;
@@ -15,25 +15,19 @@ app.post("/todo", async (req, res) => {
     return;
   }
 
-  try {
-    await Todo.create({
-      title: createPayload.title,
-      description: createPayload.description,
-      completed: false,
-    });
+  await todo.create({
+    title: createPayload.title,
+    description: createPayload.description,
+    completed: false,
+  });
 
-    res.json({
-      message: "Todo created",
-    });
-  } catch (error) {
-    res.json({
-      message: "Internal server error",
-    });
-  }
+  res.json({
+    message: "Todo created",
+  });
 });
 
 app.get("/todos", async (req, res) => {
-  const all_todos = await Todo.find({});
+  const all_todos = await todo.find({});
   res.json({
     Todos: all_todos,
   });
